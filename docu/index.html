@@ -65,8 +65,8 @@ JavaScript.</p>
   <span class="p">},</span>
 <span class="c1"><br />  // but other properties can be defined here</span>
   health: <span class="mi">100</span>,
-  _secret: &quot;I'm always hungry.&quot;,
-  __extraSecret: &quot;I'm scared of humans.&quot;,<br />
+  _secret: &quot;I'm always hungry.&quot;,             <span class="c1">// Protected (starts with _ )</span>
+  __extraSecret: &quot;I'm scared of humans.&quot;,    <span class="c1">// Private (starts with __ )</span><br />
 <span class="c1">  // as well as methods</span>
   <span class="nx">die</span> <span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
     <span class="k">this</span><span class="p">.</span><span class="nx">health</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
