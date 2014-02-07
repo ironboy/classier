@@ -1,0 +1,340 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- saved from url=(0024)http://classy.pocoo.org/ -->
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    
+<title>Classier Classes for JavaScript</title>
+    
+    <link rel="stylesheet" href="./assets/classy.css" type="text/css">
+    <link rel="stylesheet" href="./assets/pygments.css" type="text/css">
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script><style type="text/css"></style>
+    <script type="text/javascript" src="./assets/jquery.js"></script>
+    <script type="text/javascript" src="./assets/underscore.js"></script>
+    <script type="text/javascript" src="./assets/doctools.js"></script>
+    <link rel="top" title="Classier 1.0 documentation" href="#"> 
+  </head>
+  <body>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="classy-classes-for-javascript">
+<h1>Classier Classes for JavaScript<a class="headerlink" href="#classy-classes-for-javascript" title="Permalink to this headline">¶</a></h1>
+<p>Wooya.  You love JavaScript and use jQuery or another lightweight library
+extensively but you notice that your code becomes messier and messier the
+larger the application grows?  Well, that’s where Classier comes in.  Classier
+is a small JavaScript library that implements classes and private/protected class members (properties and methods) for
+JavaScript.</p>
+<p>Classier is partly inspired by, and uses the same API/syntax as, the excellent JavaScript library <a href="http://classy.pocoo.org/">Classy</a> (but does not share its codebase).</p>
+
+<p>Classier also borrows large parts of its documentation from Classy. The biggest difference between the two libraries is that you can use private and protected class members with Classier. Also class constructors get proper name in Classier, thus allowing for easier debugging -   most web browsers will console.log the name of a class when you look at an instance of it.</p>
+
+<p>Another (small, but sometimes important) difference between Classy and Classier is that Classier can use arrays and objects as property values in a class declaration and they will be cloned (rather than referenced) when you create a class instance.</p>
+
+</p>Classier started its life as a small library called <em>Object.createclass</em> and therefore still supports an older, alternative API/syntax.
+</p>
+<p>Where can you get Classier?  Here: <a class="reference external" href="http://github.com/mitsuhiko/classy">github</a>:
+<a class="reference external" href="http://github.com/mitsuhiko/classy/raw/1.4/classy.js">Classier 1.4</a></p>
+<p>How do you use Classier?</p>
+<div class="section" id="enabling-the-library">
+<h2>Enabling The Library<a class="headerlink" href="#enabling-the-library" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-html"><div class="highlight">
+  <pre><span class="nt">&lt;script </span><span class="na">type=</span><span class="s">"text/javascript"</span> <span class="na">src=</span><span class="s">"classier.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="defining-classes">
+<h2>Defining Classes<a class="headerlink" href="#defining-classes" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-javascript"><div class="highlight">
+  <pre><span class="kd">var</span> <span class="nx">Animal</span> <span class="o">=</span> <span class="nx">Class</span><span class="p">.</span><span class="nx">$extend</span><span class="p">({</span><br /><br />  <span class="c1">// __init__ will run each time we create an instance </span>
+  <span class="nx">__init__</span> <span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">name</span><span class="p">,</span> <span class="nx">age</span><span class="p">)</span> <span class="p">{</span><br />    <span class="c1">// properties that we need to set initially
+    // need only be defined inside __init__</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">name</span> <span class="o">=</span> <span class="nx">name</span><span class="p">;</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">age</span> <span class="o">=</span> <span class="nx">age</span><span class="p">;</span>
+  <span class="p">},</span>
+<span class="c1"><br />  // but other properties can be defined here</span>
+  health: <span class="mi">100</span>,
+  _secret: &quot;I'm always hungry.&quot;,
+  __extraSecret: &quot;I'm scared of humans.&quot;,<br />
+<span class="c1">  // as well as methods</span>
+  <span class="nx">die</span> <span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">health</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+  <span class="p">},</span>
+
+  <span class="nx">eat</span> <span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">what</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">health</span> <span class="o">+=</span> <span class="mi">5</span><span class="p">;</span>
+  <span class="p">}</span>,<br /><br /> <span class="nx"> tellSecret</span> <span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx"></span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return </span><span class="k">this</span><span class="p">.</span><span class="nx">_secret</span><span class="o"></span><span class="mi"></span><span class="p">;</span>
+  <span class="p">},</span>
+
+ <span class="nx"> tellExtraSecret</span> <span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx"></span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return </span><span class="k">this</span><span class="p">.</span><span class="nx">__extraSecret</span><span class="o"></span><span class="mi"></span><span class="p">;</span>
+  <span class="p">}</span><br /><br /><span class="p">});</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="creating-subclasses">
+<h2>Creating Subclasses<a class="headerlink" href="#creating-subclasses" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="kd">var</span> <span class="nx">Tiger</span> <span class="o">=</span> <span class="nx">Animal</span><span class="p">.</span><span class="nx">$extend</span><span class="p">({</span><br />
+  <span class="nx">eat</span> <span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">animal</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">$super</span><span class="p">(</span><span class="nx">animal</span><span class="p">);</span>
+    <span class="nx">animal</span><span class="p">.</span><span class="nx">die</span><span class="p">();</span>
+  <span class="p">}</span>
+<span class="p"><br />});</span>
+
+<span class="kd">var</span> <span class="nx">Sheep</span> <span class="o">=</span> <span class="nx">Animal</span><span class="p">.</span><span class="nx">$extend</span><span class="p">({</span>
+<br />  <span class="nx">__init__</span> <span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">name</span><span class="p">,</span> <span class="nx">age, shorn</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">$super</span><span class="p">(</span><span class="nx">name</span><span class="p">,</span> <span class="nx">age</span><span class="p">);</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">shorn = shorn</span><span class="o"></span><span class="kc"></span><span class="p">;</span>
+  <span class="p">}</span>
+<span class="p"><br />});</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="using-these-classes">
+<h2>Using These Classes<a class="headerlink" href="#using-these-classes" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="kd">var</span> <span class="nx">leo</span> <span class="o">=</span> <span class="nx">Tiger</span><span class="p">(</span><span class="s2">"Leo"</span><span class="p">,</span> <span class="mi">3</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">molli</span> <span class="o">=</span> <span class="nx">Sheep</span><span class="p">(</span><span class="s2">"Molli"</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+<span class="nx">leo</span><span class="p">.</span><span class="nx">eat</span><span class="p">(</span><span class="nx">molli</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>Alternatively you can also use the <cite>new</cite> operator like with regular
+JavaScript classes.  But no worries, both do exactly the same:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="kd">var</span> <span class="nx">leo</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Tiger</span><span class="p">(</span><span class="s2">"Leo"</span><span class="p">,</span> <span class="mi">3</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">molli</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Sheep</span><span class="p">(</span><span class="s2">"Molli"</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+<span class="nx">leo</span><span class="p">.</span><span class="nx">eat</span><span class="p">(</span><span class="nx">molli</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>You want to check if an object is an instance of something?  That’s
+easy as well:</p>
+<div class="highlight-javascript"><div class="highlight">
+  <pre><span class="kd">var</span> <span class="nx">leo</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Tiger</span><span class="p">(</span><span class="s2">"Leo"</span><span class="p">,</span> <span class="mi">3</span><span class="p">);
+</span>
+<span class="nx">leo</span> <span class="k">instanceof</span> <span class="nx">Animal</span> <span class="c1">// -&gt; true</span>
+<br /><span class="nx">leo</span><span class="p">.</span><span class="nx">constructor === Animal <span class="c1">// -&gt; false</span><br />leo<span class="p">.</span>constructor === Tiger <span class="c1">// -&gt; true</span></span><span class="p"> <br /></span></pre>
+</div>
+</div>
+</div>
+
+<div class="section" id="protected-and-private">
+<h2>Protected and private class members<a class="headerlink" href="#protected-and-private" title="Permalink to this headline">¶</a></h2>
+<p>Protected and private class members (properties and methods) can only be accessed from within the methods of a class instance. <em>Protected </em>members are inherited by subclasses, <em>private </em>members are <b>not</b> inherited by subclasses.</p>
+<ul><li>All class members with names starting with an underscore, &quot;_&quot;, become <em>protected</em>.</li><li>All class members with names starting with two underscores, &quot;__&quot;, become <em>private, </em>except those that also end with two underscores (like <em>__init__</em> , a public method).</li></ul><div class="highlight-javascript">
+  <div class="highlight">
+  <pre><span class="kd">var</span> <span class="nx">ani</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Animal</span><span class="p">(</span><span class="s2">"Annie"</span><span class="p">,</span> <span class="mi">3</span><span class="p">);
+</span><span class="nx"><br />ani._secret  <span class="c1"><br />// -&gt; ReferenceError: You can not access the protected property _secret</span>
+<br />ani.__extraSecret<br /><span class="c1">// -&gt; ReferenceError: You can not access the private property __extraSecret</span></span>
+
+<span class="nx">ani.tellSecret()  <span class="c1"><br />// -&gt; &quot;I'm always hungry.&quot;</span>
+<br />ani.tellExtraSecret()<br /><span class="c1">// -&gt; &quot;I'm scared of humans.&quot;</span></span><br /><span class="nx">
+
+<span class="kd">var</span> leo <span class="o">=</span> <span class="k">new</span> Tiger<span class="p">(</span><span class="s2">&quot;Leo&quot;</span><span class="p">,</span> <span class="mi">3</span><span class="p">);</span><span class="c1"></span>
+<br />leo._secret  <span class="c1"><br />// -&gt; ReferenceError: You can not access the protected property _secret</span>
+<br />leo.__extraSecret<br /><span class="c1">// -&gt; undefined</span></span><br /><span class="nx"><br />leo.tellSecret()  <span class="c1"><br />// -&gt; &quot;I'm always hungry.&quot;</span>
+<br />leo.tellExtraSecret()<br /><span class="c1">// -&gt; undefined</span></span><span class="p"></span></pre>
+</div>
+</div>
+</div>
+
+
+<div class="section" id="recap-and-outro">
+<h2>Recap and extra features<a class="headerlink" href="#recap-and-outro" title="Permalink to this headline">¶</a></h2>
+<p>What you can do with Classier:</p>
+<dl class="attribute">
+  <dt id="Class._S_classyVersion2"><tt class="descclassname">Class.</tt><tt class="descname">$classierVersion</tt><a class="headerlink" href="#Class._S_classyVersion" title="Permalink to this definition">¶</a></dt>
+  <dd>
+    <p>The version of Classier as a string (<tt class="docutils literal"><span class="pre">1.5</span></tt> for instance).</p>
+  </dd>
+</dl>
+<dl class="attribute">
+  <dt id="Class._S_classyVersion">
+<tt class="descclassname">Class.</tt><tt class="descname">$classyVersion</tt><a class="headerlink" href="#Class._S_classyVersion" title="Permalink to this definition">¶</a></dt>
+<dd>
+  <p>The version of Classy we are compatible with as a string (<tt class="docutils literal"><span class="pre">1.4</span></tt> for instance).</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="Class._S_extend">
+<tt class="descclassname">Class.</tt><tt class="descname">$extend</tt><big>(</big><em>properties</em><big>)</big><a class="headerlink" href="#Class._S_extend" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a new class by extending the given class.  The <cite>properties</cite>
+is an object with class attributes and methods (functions) for this
+class.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="Class._S_withData">
+<tt class="descclassname">Class.</tt><tt class="descname">$withData</tt><big>(</big><em>data</em><big>)</big><a class="headerlink" href="#Class._S_withData" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a new instance of the class by bypassing the constructor and
+assigning the attributes from the given object.  This is useful if you
+want to attach methods to an object recieved from a JSON object:</p>
+<div class="highlight-javascript"><div class="highlight">
+  <pre><span class="kd">var</span> <span class="nx">MyClass</span> <span class="o">=</span> <span class="nx">Class</span><span class="p">.</span><span class="nx">$extend</span><span class="p">({</span>
+  <span class="nx">__init__</span> <span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span> <span class="nx">alert</span><span class="p">(</span><span class="s1">'called'</span><span class="p">);</span> <span class="p">},</span>
+  <span class="nx">toString</span><span class="p"></span> <span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">value</span><span class="p">;</span>
+  <span class="p">}</span>
+<span class="p">});</span>
+<span class="kd">var</span> <span class="nx">obj</span> <span class="o">=</span> <span class="nx">MyClass</span><span class="p">.</span><span class="nx">$withData</span><span class="p">({</span><span class="nx">value</span><span class="o">:</span> <span class="mi">42</span><span class="p">});</span>
+<span class="nx">alert</span><span class="p">(</span><span class="nx">obj</span><span class="p">.</span><span class="nx">toString</span><span class="p">());</span>
+</pre></div>
+</div>
+<p>The example above will alert <tt class="docutils literal"><span class="pre">"42"</span></tt> only.  So the constructor is not
+called but you have access to the methods defined in the class.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="Class._S_noConflict">
+<tt class="descclassname">Class.</tt><tt class="descname">$noConflict</tt><big>(</big><big>)</big><a class="headerlink" href="#Class._S_noConflict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Removes the <cite>Class</cite> object from the <cite>window</cite> object and restores what
+was there before Classier was loaded.  It then returns the class
+object from the function.  This makes it possible to use multiple
+versions of Classier side by side or in combination with other libraries
+that also define an object with that name.  Example usage:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">Class</span><span class="p">)</span> <span class="p">{</span>
+  <span class="c1">// here you can use the Classier Class object, outside it</span>
+  <span class="c1">// won't be available</span>
+<span class="p">})(</span><span class="nx">Class</span><span class="p">.</span><span class="nx">$noConflict</span><span class="p">());</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="this._S_super">
+<tt class="descclassname">this.</tt><tt class="descname">$super</tt><big>(</big><big>)</big><a class="headerlink" href="#this._S_super" title="Permalink to this definition">¶</a></dt>
+<dd><p>When called from within a Classier function this invokes the parent
+function of the same name.  The arguments are forwarded directly.
+Check out the examples above for how that works.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="this._S_class">
+<tt class="descclassname">this.</tt><tt class="descname">$class</tt><a class="headerlink" href="#this._S_class" title="Permalink to this definition">¶</a></dt>
+<dd>
+  <p>The class object for this instance.  This is especially useful to
+acccess class attributes from instances. (Same as writing <em>this.constructor</em>)</p>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="Class.__init__">
+<tt class="descclassname">Class.</tt><tt class="descname">__init__</tt><big>(</big><big>)</big><a class="headerlink" href="#Class.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>The constuctor of a class.  This is created immediately after a
+class was created and gets all the arguments passed when the
+object was created:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="kd">var</span> <span class="nx">leo</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Tiger</span><span class="p">(</span><span class="s2">"Leo"</span><span class="p">,</span> <span class="mi">3</span><span class="p">);</span>
+<span class="c1">// --&gt; __init__ is invoked with "Leo" and 3</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Class.__include__">
+<tt class="descclassname">Class.</tt><tt class="descname">__include__</tt><a class="headerlink" href="#Class.__include__" title="Permalink to this definition">¶</a></dt>
+<dd><p>When this attribute is provided when the class is created and set to a
+list of ordinary objects, each attribute of such an object is mixed
+into the class.  Imagine you have some functionality you want to export
+from multiple classes, this is the perfect way:</p>
+<div class="highlight-javascript"><div class="highlight">
+  <pre><span class="kd">var</span> <span class="nx">UpdateMixin</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="nx">update</span> <span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">options</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">key</span> <span class="k">in</span> <span class="nx">options</span><span class="p">)</span>
+      <span class="k">this</span><span class="p">[</span><span class="nx">key</span><span class="p">]</span> <span class="o">=</span> <span class="nx">options</span><span class="p">[</span><span class="nx">key</span><span class="p">];</span>
+  <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="kd">var</span> <span class="nx">MyClass</span> <span class="o">=</span> <span class="nx">Class</span><span class="p">.</span><span class="nx">$extend</span><span class="p">({</span>
+  <span class="nx">__include__</span> <span class="o">:</span> <span class="p">[</span><span class="nx">UpdateMixin</span><span class="p">]</span>
+<span class="p">});</span>
+
+<span class="kd">var</span> <span class="nx">obj</span> <span class="o">=</span> <span class="nx">MyClass</span><span class="p">();</span>
+<span class="nx">obj</span><span class="p">.</span><span class="nx">update</span><span class="p">({</span><span class="nx">foo</span><span class="o">:</span> <span class="mi">1</span><span class="p">,</span> <span class="nx">bar</span><span class="o">:</span> <span class="mi">2</span><span class="p">});</span>
+<span class="c1">// obj.foo --&gt; 1</span>
+</pre></div>
+</div>
+<p>This is similar to subclassing but has the advantage that you can mix
+multiple functions in at the same time.  Please note that you can only
+mix in regular objects, not actual classes with a prototype (like those
+created with <cite>Class.$extend</cite>).</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Class.__classvars__">
+<tt class="descclassname">Class.</tt><tt class="descname">__classvars__</tt><a class="headerlink" href="#Class.__classvars__" title="Permalink to this definition">¶</a></dt>
+<dd><p>An object of items that should be added to the class as class level
+attributes:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="kd">var</span> <span class="nx">MyClass</span> <span class="o">=</span> <span class="nx">Class</span><span class="p">.</span><span class="nx">$extend</span><span class="p">({</span>
+    <span class="nx">__classvars__</span> <span class="o">:</span> <span class="p">{</span>
+      <span class="nx">MAX_ITEMS</span> <span class="o">:</span> <span class="mi">42</span>
+    <span class="p">}</span>
+<span class="p">});</span>
+<span class="nx">alert</span><span class="p">(</span><span class="nx">MyClass</span><span class="p">.</span><span class="nx">MAX_ITEMS</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>This shows a message box with <tt class="docutils literal"><span class="pre">"42"</span></tt>.  To access these attributes
+from an instance, use the <tt class="docutils literal"><span class="pre">$class</span></tt> attribute of instances:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="nx">alert</span><span class="p">(</span><span class="nx">MyClass</span><span class="p">().</span><span class="nx">$class</span><span class="p">.</span><span class="nx">MAX_ITEMS</span><span class="p">);</span>
+</pre></div>
+</div></dd></dl>
+
+</div>
+</div>
+
+<div class="section" id="creating-subclasses">
+<h2>Alternate/legacy syntax<a class="headerlink" href="#creating-subclasses" title="Permalink to this headline">¶</a></h2>
+<p>Because <b>Classier</b> started its life without having glanced at its cousin library Classy you can also use an alternate syntax to create your classes. It involves using <i>Object.createClass</i> to create a class  and the "magic property" <i>_extends</i> to specify inheritance. <br />
+  <br />
+  Also:
+  The magic method <i>init</i> is used instead of <i>__init__</i> and instead of <i>this.$super</i> you  write <i>$this._super</i>. </p>
+<p>And<em> _class</em> used to be necessary to give the class constructor a proper name (thus making it easy to see what class an object belongs to when debugging). Since version 1.5 this is taken care of automatically and the class name will be that of the variable you assign the class to.</p>
+<p>This syntax can still be used in parallell with the newer syntax. So we can write:</p>
+<div class="highlight-javascript">
+  <div class="highlight">
+  <pre>
+<span class="kd">var</span> <span class="nx">Sheep</span> <span class="o">=</span> <span class="nx">Object.createClass</span><span class="nx"></span><span class="p">({</span>
+<br />  _class : &quot;Sheep&quot;, <span class="c1">// not needed since Classier 1.5</span>
+<br />  _extends: Animal,
+<br />  <span class="nx">init:</span><span class="o"></span> <span class="kd">function</span><span class="p">(</span><span class="nx">name</span><span class="p">,</span> <span class="nx">age, shorn</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">_super</span><span class="p">(</span><span class="nx">name</span><span class="p">,</span> <span class="nx">age</span><span class="p">);</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">shorn = shorn</span><span class="o"></span><span class="kc"></span><span class="p">;</span>
+  <span class="p">}</span>
+<span class="p"><br />});</span>
+</pre></div>
+</div>
+<p>and it would mean just the same as:</p>
+<div class="highlight-javascript"><div class="highlight">
+  <pre>
+<span class="kd">var</span> <span class="nx">Sheep</span> <span class="o">=</span> <span class="nx">Animal</span><span class="p">.</span><span class="nx">$extend</span><span class="p">({</span>
+<br />  <span class="nx">__init__</span> <span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">name</span><span class="p">,</span> <span class="nx">age, shorn</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">$super</span><span class="p">(</span><span class="nx">name</span><span class="p">,</span> <span class="nx">age</span><span class="p">);</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">shorn = shorn</span><span class="o"></span><span class="kc"></span><span class="p">;</span>
+  <span class="p">}</span>
+<span class="p"><br />});</span>
+</pre></div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+  <a href="http://github.com/mitsuhiko/classy"><img class="forkme" style="position: fixed; top: 0; right: 0; border: 0;" src="./assets/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"></a>
+
+    <div class="footer">
+        © Copyright 2014, Thomas Frank, Nodebite AB.
+      <br><br>Part of this documentation is borrowed from Classy:<br> © Copyright 2010, Armin Ronacher
+    </div>
+  
+</body></html>
