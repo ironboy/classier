@@ -1,0 +1,4 @@
+classier
+========
+
+Classes for JavaScript
