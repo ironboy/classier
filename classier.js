@@ -135,6 +135,7 @@
     };
     // Named constructor
     eval("obj.constructor = function " + className + "(){return func.apply(this,arguments)}");
+    obj.constructor.toString = function(){ return "class " + className; };
     // Remember the class properties (that we need to create instances with Object.create)
     obj.constructor._obj = func._obj = obj;
     // Add Classy stuff
@@ -187,13 +188,14 @@
 
   // Inheritance - setup inheritance, static properties and mixins
   var _setupInheritance = function(props,obj,addToStatic,mixins){
-    var i;
+    var i, extendObj;
     // If no explicit inheritance and not a _baseClass then inherit base class
     !props._extends && !props._baseClass && (props._extends = Class);
     // Extend
-    props._extends && (obj = Obj.createDeep(props._extends._obj));
-    // Set __proto__ if the not implemented natively
-    props._extends && (obj["__proto__"] || (obj["__proto__"] = props._extends._obj));
+    if(props._extends){
+      extendObj = props._extends._obj;
+      obj = Obj.createDeep(extendObj);
+    }
     // Static properties (can not be private/protected)
     for(i in props._extends){
       !Class.hasOwnProperty(i) && (addToStatic[i] = props._extends[i]);
@@ -213,6 +215,8 @@
     for(i in props){
       if(typeof props[i] == "function" && i!="_super" && i!="$super"){
         props[i] = _wrap(props[i]);
+        // remember $super
+        typeof extendObj[i] == "function" && (props[i].__super__ = extendObj[i]);
       }
     }
     // Add class specific properties
@@ -231,7 +235,12 @@
         if(i.substring(i.length-2) == "__"){continue;}
         if(!obj.hasOwnProperty(i) && i.indexOf(settings.privatePropertyPrefix) === 0){
           // private properties only - make them no inheritable
-          Object.defineProperty(obj,i,{value:undefined,writable:true});
+          try {
+            Object.defineProperty(obj,i,{value:undefined,writable:true});
+          }
+          catch(e){
+            // Old IE's die hard ;)
+          }
           continue;
         }
         if(!obj.hasOwnProperty(i)){continue;}
@@ -248,17 +257,21 @@
   // this keeps private and protected properties under a shield
   var _friendly = false;
   var _definePrivateProp = function(obj,propName,propVal){
-    Object.defineProperty(obj, propName, {
-      get: function() {
-        if(_friendly || _protector(this,propName)){return propVal;}
-      },
-      set: function(x) {
-        if(_friendly || _protector(this,propName)){
-          this.hasOwnProperty(propName) ?
-            (propVal = x) : _definePrivateProp(this,propName,x);
+    try {
+      Object.defineProperty(obj, propName, {
+        get: function() {
+          if(_friendly || _protector(this,propName)){return propVal;}
+        },
+        set: function(x) {
+          if(_friendly || _protector(this,propName)){
+            this.hasOwnProperty(propName) ?
+              (propVal = x) : _definePrivateProp(this,propName,x);
+          }
         }
-      }
-    });
+      });
+    } catch(e){
+      // Old IE:s die hard ;)
+    }
   };
   var _protector = function(obj,propName){
     _friendly = true;
@@ -357,6 +370,7 @@
       // extract url and approximate line
       var line = l.pop();
       var url = l.join(':');
+      url = url.substring(url.indexOf('(') + 1);
       // get the source code
       var src = _getFile(url).split('\n');
       // find the correct line
@@ -382,6 +396,7 @@
     i = "";
     while(src.length && !(i += src.pop()).replace(/\w/g,'')){}
     i = i.split('').reverse().join('').substring(1);
+    i = i.replace(/\W/g,'') || '_';
     return i || '_';
   };
 
@@ -407,34 +422,9 @@
 
   // _super - lets us adress super class methods 
   // even though they are overridden
-  var _lastSuperId, _lastSuperFunc, _superid = 0;
   var _super = function $super(){
-    var me = this, p = me, a = arguments;
-    // optimize 2 - even faster
-    if(_lastSuperId === a.callee.caller.superid && _lastSuperFunc){
-      return _lastSuperFunc.apply(me,arguments);
-    }
-    _lastSuperId = a.callee.caller.superid = _superid++;
-    // end opti 2
-    var caller = a.callee.caller.caller;
-    if(caller._super){
-      // optimize 1 - part 2
-      _lastSuperFunc = caller._super;
-      return caller._super.apply(me,a);
-    }
-    p = p["__proto__"]["__proto__"];
-    for(var i in this){
-      if(this[i] === caller){
-        if(!p || !p[i]){throw(
-          new ReferenceError((p || {}).constructor.name +
-            '.' + i + ' is not a method.')
-        );}
-        // optimize  1 - part 1:
-        caller._super = p[i];
-        // end opti 1
-        return p[i].apply(me,a);
-      }
-    }
+    return arguments.callee.caller.caller.
+      __super__.apply(this,arguments);
   };
 
   // Base class
