@@ -10,6 +10,10 @@
  */
  
 @import url("basic.css");
+
+html {
+    -webkit-text-size-adjust: none; /* Prevent font scaling in landscape */
+}
  
 /* -- page layout ----------------------------------------------------------- */
  
@@ -281,5 +285,5 @@ a:hover tt {
 }
 
 @media print {
-	.forkme {display:none}	
+    .forkme {display:none}  
 }
